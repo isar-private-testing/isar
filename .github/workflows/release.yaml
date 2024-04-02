@@ -54,6 +54,25 @@ jobs:
           file: ${{ matrix.artifact_name }}
           asset_name: ${{ matrix.artifact_name }}
           tag: ${{ github.ref }}
+      - name: Upload binary to another repo
+        env:
+          TARGET_REPO: 'isar-private-testing/binaries'
+          TARGET_BRANCH: 'main'
+          COMMIT_MESSAGE: 'Deploy binaries'
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+        run: |
+          git config --global user.email "vicente.russo@gmail.com"
+          git config --global user.name "GitHub Actions"
+          # Clone the target repository
+          git clone https://github.com/${TARGET_REPO} --branch ${TARGET_BRANCH} --single-branch repo
+          # Copy the binary into the cloned repository directory
+          cp ${{ matrix.artifact_name }} repo/
+          # Commit and push the changes
+          cd repo
+          git add .
+          git commit -m "${COMMIT_MESSAGE}"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${TARGET_REPO}.git ${TARGET_BRANCH}
+      
 
   testlab:
     needs: build_binaries
