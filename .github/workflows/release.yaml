@@ -46,30 +46,31 @@ jobs:
       - name: Set Isar Version
         run: echo "ISAR_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
       - name: Build binary
-        run: bash tool/${{ matrix.script }}
-      - name: Upload binary
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ matrix.artifact_name }}
-          asset_name: ${{ matrix.artifact_name }}
-          tag: ${{ github.ref }}
-      - name: Upload binary to another repo
+        run: bash tool/${{ matrix.script }} ${{ matrix.parameters }}
+      - name: Upload binaries to another repo
+        if: ${{ success() && matrix.os == 'ubuntu-latest' }} # This ensures the upload step runs only once after all builds are successful.
+        run: |
+          git config --global user.email "vicente.russo@gmail.com"
+          git config --global user.name "GitHub Actions"
+          # Temporarily store binaries to avoid re-cloning for each matrix entry
+          mkdir -p binaries
+          mv ${{ matrix.artifact_name }} binaries/
+        shell: bash
+      - name: Push binaries to another repository
         env:
           TARGET_REPO: 'isar-private-testing/binaries'
           TARGET_BRANCH: 'main'
           COMMIT_MESSAGE: 'Deploy binaries'
           GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
         run: |
-          git config --global user.email "vicente.russo@gmail.com"
-          git config --global user.name "GitHub Actions"
           # Clone the target repository
-          git clone https://github.com/${TARGET_REPO} --branch ${TARGET_BRANCH} --single-branch repo
-          # Copy the binary into the cloned repository directory
-          cp ${{ matrix.artifact_name }} repo/
-          # Commit and push the changes
+          git clone https://github.com/${TARGET_REPO} repo
           cd repo
+          # Checkout to a specific branch or create it if it doesn't exist
+          git checkout ${TARGET_BRANCH} || git checkout -b ${TARGET_BRANCH}
+          # Copy binaries from the previous step
+          cp ../binaries/* .
+          # Add, commit, and push changes
           git add .
-          git commit -m "${COMMIT_MESSAGE}"
+          git commit -m "Update binaries"
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/${TARGET_REPO}.git ${TARGET_BRANCH}
-    
