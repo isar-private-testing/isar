@@ -87,7 +87,7 @@ jobs:
           # Enable globstar to use the ** pattern for recursive file matching
           shopt -s globstar
           # Copy all binaries from the downloaded artifacts to the ISAR_VERSION directory
-          cp ../binaries/**/* "$ISAR_VERSION"
+          cp binaries/**/* "$ISAR_VERSION"
           git add .
           git commit -m "Deploy binaries for version $ISAR_VERSION" || echo "No changes to commit"
           git push https://x-access-token:${GITHUB_TOKEN}@github.com/isar-private-testing/binaries.git main

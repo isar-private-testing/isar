@@ -3,8 +3,8 @@ name: Unified Deploy Docs
 on:
   push:
     branches:
-      - main
-      - v3
+      - main22
+      - v32
 
 jobs:
   deploy:

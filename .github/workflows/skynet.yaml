@@ -3,8 +3,8 @@ name: Triggers remote jenkins
 on:
   push:
     branches:
-      - main
-      - v3
+      - main2
+      - v32
 
 permissions:
   contents: read
