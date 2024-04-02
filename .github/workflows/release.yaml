@@ -47,30 +47,34 @@ jobs:
         run: echo "ISAR_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
       - name: Build binary
         run: bash tool/${{ matrix.script }} ${{ matrix.parameters }}
-      - name: Upload binaries to another repo
-        if: ${{ success() && matrix.os == 'ubuntu-latest' }} # This ensures the upload step runs only once after all builds are successful.
+      - name: Upload binary as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: ${{ matrix.artifact_name }}
+
+  upload_to_repo:
+    needs: build_binaries
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v2
+        with:
+          path: binaries/
+      - name: Setup Git and clone target repository
         run: |
           git config --global user.email "vicente.russo@gmail.com"
           git config --global user.name "GitHub Actions"
-          # Temporarily store binaries to avoid re-cloning for each matrix entry
-          mkdir -p binaries
-          mv ${{ matrix.artifact_name }} binaries/
-        shell: bash
-      - name: Push binaries to another repository
-        env:
-          TARGET_REPO: 'isar-private-testing/binaries'
-          TARGET_BRANCH: 'main'
-          COMMIT_MESSAGE: 'Deploy binaries'
-          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
-        run: |
-          # Clone the target repository
-          git clone https://github.com/${TARGET_REPO} repo
+          git clone https://github.com/isar-private-testing/binaries repo
           cd repo
-          # Checkout to a specific branch or create it if it doesn't exist
-          git checkout ${TARGET_BRANCH} || git checkout -b ${TARGET_BRANCH}
-          # Copy binaries from the previous step
+          git checkout main || git checkout -b main
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+      - name: Copy binaries to repository and push
+        run: |
           cp ../binaries/* .
-          # Add, commit, and push changes
           git add .
-          git commit -m "Update binaries"
-          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${TARGET_REPO}.git ${TARGET_BRANCH}
+          git commit -m "Deploy binaries" || echo "No changes to commit"
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/isar-private-testing/binaries.git main
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
