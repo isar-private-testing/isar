@@ -12,27 +12,27 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # - os: ubuntu-latest
-          #   artifact_name: libisar_android_arm64.so
-          #   script: build_android.sh
-          # - os: ubuntu-latest
-          #   artifact_name: libisar_android_armv7.so
-          #   script: build_android.sh armv7
-          # - os: ubuntu-latest
-          #   artifact_name: libisar_android_x64.so
-          #   script: build_android.sh x64
-          # - os: macos-latest
-          #   artifact_name: isar_ios.xcframework.zip
-          #   script: build_ios.sh
-          # - os: ubuntu-20.04
-          #   artifact_name: libisar_linux_x64.so
-          #   script: build_linux.sh x64
-          # - os: macos-latest
-          #   artifact_name: libisar_macos.dylib
-          #   script: build_macos.sh
-          # - os: windows-latest
-          #   artifact_name: isar_windows_x64.dll
-          #   script: build_windows.sh x64
+          - os: ubuntu-latest
+            artifact_name: libisar_android_arm64.so
+            script: build_android.sh
+          - os: ubuntu-latest
+            artifact_name: libisar_android_armv7.so
+            script: build_android.sh armv7
+          - os: ubuntu-latest
+            artifact_name: libisar_android_x64.so
+            script: build_android.sh x64
+          - os: macos-latest
+            artifact_name: isar_ios.xcframework.zip
+            script: build_ios.sh
+          - os: ubuntu-20.04
+            artifact_name: libisar_linux_x64.so
+            script: build_linux.sh x64
+          - os: macos-latest
+            artifact_name: libisar_macos.dylib
+            script: build_macos.sh
+          - os: windows-latest
+            artifact_name: isar_windows_x64.dll
+            script: build_windows.sh x64
           - os: ubuntu-latest
             artifact_name: isar.wasm
             script: build_wasm.sh
@@ -82,13 +82,8 @@ jobs:
           # Extract tag name from ref_name, assuming it's in the format "refs/tags/<tag_name>"
           ISAR_VERSION=$(echo "${{ github.ref_name }}" | sed 's/refs\/tags\///')
           echo "Deploying binaries to version: $ISAR_VERSION"
-          ls -Rlh .
           # Create a directory for the ISAR_VERSION if it doesn't already exist
           mkdir -p "$ISAR_VERSION"
-          ls -Rlh .
-          # # Enable globstar to use the ** pattern for recursive file matching
-          # shopt -s globstar
-          ls -Rlh ../binaries
           # Copy all binaries from the downloaded artifacts to the ISAR_VERSION directory
           cp ../binaries/**/* "$ISAR_VERSION"
           git add .
