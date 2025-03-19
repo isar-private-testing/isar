@@ -20,7 +20,7 @@ updates:
     reviewers:
       - "leisim"
   - package-ecosystem: "pub"
-    directory: "/packages/isar_flutter_libs"
+    directory: "/packages/isar_community_flutter_libs"
     schedule:
       interval: "weekly"
     reviewers:
@@ -50,7 +50,7 @@ updates:
     reviewers:
       - "leisim"
   - package-ecosystem: "gradle"
-    directory: "/packages/isar_flutter_libs/android"
+    directory: "/packages/isar_community_flutter_libs/android"
     schedule:
       interval: "weekly"
     reviewers:

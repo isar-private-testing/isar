@@ -6,3 +6,6 @@ windows/
 linux/
 macos/
 web/
+
+# FVM Version Cache
+.fvm/

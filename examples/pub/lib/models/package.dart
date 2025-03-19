@@ -1,5 +1,5 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:pub_app/models/api/metrics.dart';
 import 'package:pub_app/models/api/package.dart';
 import 'package:pubspec/pubspec.dart';

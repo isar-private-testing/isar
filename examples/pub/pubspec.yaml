@@ -20,8 +20,8 @@ dependencies:
     sdk: flutter
   flutter_riverpod: ^2.0.0
   google_fonts: ^3.0.1
-  isar: *isar_version
-  isar_flutter_libs: *isar_version
+  isar_community: *isar_version
+  isar_community_flutter_libs: *isar_version
   json_annotation: ^4.6.0
   markdown: ^6.0.0
   pub_semver: ^2.1.1
@@ -40,7 +40,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.0.0
   copy_with_extension_gen: ^4.0.3
-  isar_generator: *isar_version
+  isar_community_generator: *isar_version
   json_serializable: ^6.3.0
   flutter_lints: ^2.0.1
 
@@ -51,3 +51,14 @@ flutter:
     - assets/pub_logo.svg
     - assets/pub_logo_dark.svg
     - assets/search_bg.svg
+
+
+dependency_overrides:
+  isar_community:
+    path: ../../packages/isar_community
+  isar_community_flutter_libs:
+    path: ../../packages/isar_community_flutter_libs
+
+  # dev
+  isar_community_generator:
+    path: ../../packages/isar_community_generator

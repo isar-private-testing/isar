@@ -2,7 +2,7 @@
 
 import 'dart:js' as js;
 
-import 'package:isar/src/web/open.dart' as isar_web;
+import 'package:isar_community/src/web/open.dart' as isar_web;
 import 'package:isar_test/src/isar_web_src.dart';
 
 Future<void> init() async {

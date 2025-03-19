@@ -4,7 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:isar/isar.dart';
+import 'package:isar_community/isar.dart';
 import 'package:isar_test/src/init_native.dart'
     if (dart.library.html) 'package:isar_test/src/init_web.dart';
 import 'package:isar_test/src/sync_async_helper.dart';

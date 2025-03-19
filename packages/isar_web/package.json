@@ -5,7 +5,7 @@
   "author": "Simon Leier",
   "license": "Apache-2.0",
   "repository": "https://github.com/isar-community/isar-web",
-  "homepage": "https://isar.dev/",
+  "homepage": "https://isar-community.dev/",
   "main": "dist/index.js",
   "directories": {
     "test": "test"
