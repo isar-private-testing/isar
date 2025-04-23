@@ -1,4 +1,4 @@
-#include "include/isar_flutter_libs/isar_flutter_libs_plugin.h"
+#include "include/isar_community_flutter_libs/isar_flutter_libs_plugin.h"
 
 // This must be included before many other Windows headers.
 #include <windows.h>
